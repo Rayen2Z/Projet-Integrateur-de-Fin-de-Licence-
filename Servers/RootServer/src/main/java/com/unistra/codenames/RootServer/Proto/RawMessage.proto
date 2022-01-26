@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+//package com.unistra.codenames.RootServer.Proto.Build;
+
+//option java_package = "com.unistra.codenames.RootServer.Proto.Build";
+option java_outer_classname = "RawMessageProto";
+
+message RawMessage {
+      message PlayerInfo {
+        uint32 playerID = 1;
+        bool isHost = 2;
+        uint32 team = 3;
+        uint32 identity = 4; //0 Agent, 1 Detective
+        bool isHisTurn = 5;
+        string pseudo = 6;
+        uint32 label = 7; //INDEX for color
+        uint32 nbVictory = 8;
+        uint32 nbBlackCard = 9;
+      }
+
+      message Card {
+        string word = 1;
+        bool turnedUp = 2;
+        uint32 property = 4;
+      }
+
+      message RoomInfo {
+        uint32 roomID = 1;
+        uint32 roomHostID = 2;
+        string roomName = 3;
+        uint32 roomLanguage = 4;
+        repeated PlayerInfo playerList = 5;
+        repeated Card cardList = 6;
+        repeated string themeList = 7;
+        uint32 timerValue = 8;
+      }
+
+      message RoomBrief {
+        uint32 roomID = 1;
+        uint32 roomHostID = 2;
+        string roomName = 3;
+        uint32 roomLanguage = 4;
+
+        uint32 countPlayer = 5;
+        bool isPlaying = 6;
+
+        /* TODO: mdp pour chambre ou pas? */
+
+      }
+
+      message Action {
+        uint32 roomID = 1;
+        repeated uint32 cardIndex = 2;
+        /* toujours 1 */
+        uint32 cardQuantity = 3;
+        string msg = 4;
+      }
+
+  /* Always required to be filled by client and server*/
+  uint32 userID = 1;
+  uint32 requestCode = 2;
+
+  /* Always required to be filled by server*/
+  uint32 responseCode = 3;
+
+  /* In lobby */
+  repeated RoomBrief roomList = 4;
+
+  /* In room*/
+  RoomInfo roomInfo = 5;
+
+  /* For login request only */
+  string  password = 6;
+  string pseudo = 7;
+
+  /* Play game */
+  Action action = 8;
+}
